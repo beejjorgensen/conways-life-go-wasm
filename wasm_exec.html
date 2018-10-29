@@ -22,22 +22,28 @@ license that can be found in the LICENSE file.
 		}
 
 		const go = new Go();
+
 		let mod, inst;
+
 		WebAssembly.instantiateStreaming(fetch("conlife.wasm"), go.importObject).then((result) => {
 			mod = result.module;
 			inst = result.instance;
-			document.getElementById("runButton").disabled = false;
+
+			go.run(inst);
 		});
 
+		/*
 		async function run() {
 			console.clear();
 			await go.run(inst);
 			inst = await WebAssembly.instantiate(mod, go.importObject); // reset instance
 		}
+		*/
 	</script>
 
-	<button onClick="run();" id="runButton" disabled>Run</button>
 	<canvas id="lifecanvas"></canvas>
+	<br>
+	<button id="step-button">Step</button>
 </body>
 
 </html>

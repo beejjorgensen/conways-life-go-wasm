@@ -1,10 +1,7 @@
 package main
 
 import (
-	"fmt"
-	"math/rand"
 	"syscall/js"
-	"time"
 
 	"github.com/beejjorgensen/conlife/life"
 )
@@ -12,34 +9,13 @@ import (
 const cWidth = 400
 const cHeight = 300
 
-func main() {
-	rand.Seed(time.Now().UTC().UnixNano())
-	jsGlobal := js.Global()
-	document := jsGlobal.Get("document")
+var conlife *life.Life
+var ctx js.Value
+var imageData js.Value
 
-	// Get a reference to the canvas
-	canvas := document.Call("getElementById", "lifecanvas")
-
-	// Set canvas size
-	canvas.Call("setAttribute", "width", cWidth)
-	canvas.Call("setAttribute", "height", cHeight)
-
-	// Get the context
-	ctx := canvas.Call("getContext", "2d")
-
-	// Get image data
-	imageData := ctx.Call("getImageData", 0, 0, cWidth, cHeight)
-	//pixelData := imageData.Get("data")
-
-	fmt.Println("A")
-
-	// Make a new Game
-	conlife := life.New(cWidth, cHeight)
-	conlife.Randomize()
-
-	conlife.Steps(50)
-
-	fmt.Println("B")
+// updateLife single-steps the simulation and updates the canvas
+func updateLife() {
+	conlife.Step()
 
 	indexCount := cWidth * cHeight * 4
 	newPixelData := make([]uint8, indexCount, indexCount)
@@ -65,14 +41,51 @@ func main() {
 
 	newPixelDataArray := js.TypedArrayOf(newPixelData)
 
-	fmt.Println("X")
 	imageData.Get("data").Call("set", newPixelDataArray)
 
 	newPixelDataArray.Release()
 
-	fmt.Println("C")
-	//fmt.Printf("Context: %v\n", ctx)
-	//fmt.Printf("RGBA: %v\n", rgba)
 	ctx.Call("putImageData", imageData, 0, 0)
-	fmt.Println("D")
+}
+
+// onStepButton is called when the step button is clicked
+func onStepButton(args []js.Value) {
+	updateLife()
+}
+
+// initJs initializes all the JS stuff
+func initJs() {
+	jsGlobal := js.Global()
+	document := jsGlobal.Get("document")
+
+	// Get a reference to the canvas
+	canvas := document.Call("getElementById", "lifecanvas")
+
+	// Set canvas size
+	canvas.Call("setAttribute", "width", cWidth)
+	canvas.Call("setAttribute", "height", cHeight)
+
+	// Get the context
+	ctx = canvas.Call("getContext", "2d")
+
+	// Get image data
+	imageData = ctx.Call("getImageData", 0, 0, cWidth, cHeight)
+
+	// Set up the button event listener
+	stepCb := js.NewCallback(onStepButton)
+	document.Call("getElementById", "step-button").Call("addEventListener", "click", stepCb)
+}
+
+// Main
+func main() {
+	// Make a new Game
+	conlife = life.New(cWidth, cHeight)
+	conlife.Randomize()
+
+	// Initialize JS and add the event listeners
+	initJs()
+
+	done := make(chan struct{}, 0)
+
+	<-done
 }
