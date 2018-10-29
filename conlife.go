@@ -12,13 +12,11 @@ const cHeight = 300
 var conlife *life.Life
 var ctx js.Value
 var imageData js.Value
+var newPixelData []uint8
 
 // updateLife single-steps the simulation and updates the canvas
 func updateLife() {
 	conlife.Step()
-
-	indexCount := cWidth * cHeight * 4
-	newPixelData := make([]uint8, indexCount, indexCount)
 
 	lifeData := conlife.Get()
 
@@ -82,10 +80,14 @@ func main() {
 	conlife = life.New(cWidth, cHeight)
 	conlife.Randomize()
 
+	// Allocate an RGBA array for drawing to the canvas
+	indexCount := cWidth * cHeight * 4
+	newPixelData = make([]uint8, indexCount, indexCount)
+
 	// Initialize JS and add the event listeners
 	initJs()
 
+	// Block forever
 	done := make(chan struct{}, 0)
-
 	<-done
 }
