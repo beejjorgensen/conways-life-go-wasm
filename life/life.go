@@ -35,6 +35,8 @@ func (l *Life) Randomize() {
 	for i := range buf {
 		buf[i] = uint8(rand.Uint32() & 1)
 	}
+
+	l.Generation = 0
 }
 
 // Return the value at the given x, y coordinate on the read buffer
@@ -52,6 +54,8 @@ func (l *Life) Steps(n int) {
 // Step runs a single generation
 func (l *Life) Step() {
 	var writeBuf []uint8
+
+	l.Generation++
 
 	if l.readBuf == 0 {
 		writeBuf = l.data[1]
