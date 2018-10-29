@@ -42,6 +42,13 @@ func (l *Life) readVal(x, y int) uint8 {
 	return l.data[l.readBuf][y*l.Width+x]
 }
 
+// Steps runs a number of steps
+func (l *Life) Steps(n int) {
+	for i := 0; i < n; i++ {
+		l.Step()
+	}
+}
+
 // Step runs a single generation
 func (l *Life) Step() {
 	var writeBuf []uint8

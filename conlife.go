@@ -6,7 +6,7 @@ import (
 	"syscall/js"
 	"time"
 
-	lifegame "github.com/beejjorgensen/hellowasm/life"
+	"github.com/beejjorgensen/conlife/life"
 )
 
 const cWidth = 400
@@ -16,9 +16,6 @@ func main() {
 	rand.Seed(time.Now().UTC().UnixNano())
 	jsGlobal := js.Global()
 	document := jsGlobal.Get("document")
-
-	game := lifegame.New(10, 10)
-	fmt.Println(game.Generation)
 
 	// Get a reference to the canvas
 	canvas := document.Call("getElementById", "lifecanvas")
@@ -34,43 +31,25 @@ func main() {
 	imageData := ctx.Call("getImageData", 0, 0, cWidth, cHeight)
 	//pixelData := imageData.Get("data")
 
-	// Make a random array of 1's and 0's
-	life := [cWidth * cHeight]int{}
-
 	fmt.Println("A")
-	for i := range life {
-		life[i] = rand.Int() & 1
-	}
+
+	// Make a new Game
+	conlife := life.New(cWidth, cHeight)
+	conlife.Randomize()
+
+	conlife.Steps(50)
 
 	fmt.Println("B")
-	// Convert it into an RGBA array
-	/*
-			for i := range life {
-				var c int
-
-				if life[i] == 0 {
-					c = 0
-				} else {
-					c = 255
-				}
-
-				j := i * 4
-
-				pixelData.SetIndex(j+0, c)
-				pixelData.SetIndex(j+1, c)
-				pixelData.SetIndex(j+2, c)
-				pixelData.SetIndex(j+3, 255)
-			}
-		imageData.Set("data", js.TypedArrayOf(newPixelData))
-	*/
 
 	indexCount := cWidth * cHeight * 4
 	newPixelData := make([]uint8, indexCount, indexCount)
 
-	for i := range life {
+	lifeData := conlife.Get()
+
+	for i := range lifeData {
 		var c uint8
 
-		if life[i] == 0 {
+		if lifeData[i] == 0 {
 			c = 0
 		} else {
 			c = 255
