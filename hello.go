@@ -5,6 +5,8 @@ import (
 	"math/rand"
 	"syscall/js"
 	"time"
+
+	lifegame "github.com/beejjorgensen/hellowasm/life"
 )
 
 const cWidth = 400
@@ -14,6 +16,9 @@ func main() {
 	rand.Seed(time.Now().UTC().UnixNano())
 	jsGlobal := js.Global()
 	document := jsGlobal.Get("document")
+
+	game := lifegame.New(10, 10)
+	fmt.Println(game.Generation)
 
 	// Get a reference to the canvas
 	canvas := document.Call("getElementById", "lifecanvas")
