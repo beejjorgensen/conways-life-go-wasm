@@ -119,7 +119,7 @@ func onRandButton(args []js.Value) {
 	updateGenerations()
 }
 
-// setInnerHTML sets an HTML button label
+// setInnerHTML sets inner HTML on an element
 func setInnerHTML(id, label string) {
 	document := js.Global().Get("document")
 	document.Call("getElementById", id).Set("innerHTML", label)
