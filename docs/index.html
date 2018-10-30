@@ -37,6 +37,9 @@ license that can be found in the LICENSE file.
 		});
 	</script>
 
+	<h1>Conway's Game of Life</h1>
+	<h2>Go compiled to Web Assembly</h2>
+
 	<div id="life-screen" class="hidden">
 		<canvas id="lifecanvas"></canvas>
 		<br>
@@ -44,7 +47,9 @@ license that can be found in the LICENSE file.
 		<button id="run-button">Run</button>
 		<button id="rand-button">Random</button>
 
-		<div>Generation: <span id="generation">0</span></div>
+		<div id="generation-ui">Generation: <span id="generation">0</span></div>
+
+		<p><a href="https://github.com/beejjorgensen/conways-life-go-wasm">Source code</a></p>
 	</div>
 
 	<div id="loading-screen">Loading...</div>
