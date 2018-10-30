@@ -4,7 +4,7 @@ import (
 	"strconv"
 	"syscall/js"
 
-	"github.com/beejjorgensen/conlife/life"
+	"github.com/beejjorgensen/conways-life-go-wasm/life"
 )
 
 const cWidth = 400  // Canvas/game width

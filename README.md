@@ -5,15 +5,20 @@ is welcome.
 
 ## Install and run
 
+Go v1.11 or higher is required.
+
 A Makefile is included to help with the build.
 
 ```
 make
 ```
 
-And then run a webserver that's aware of the `application/wasm` MIME
-type. If you don't have one handy, here's a silent one-liner for use
-with [goexec](https://github.com/shurcooL/goexec) listening on
+This'll put a `conlife.wasm` file in the `docs/` directory.
+
+And then run a webserver in that directory. The server has to be aware
+of the `application/wasm` MIME type. If you don't have one handy, here's
+a silent one-liner for use with
+[goexec](https://github.com/shurcooL/goexec) listening on
 `http://localhost:8000/`:
 
 ```
