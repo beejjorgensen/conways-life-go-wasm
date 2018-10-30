@@ -1,4 +1,4 @@
-# Conway's Life in Go and Web Assembly
+# Conway's Life in Go and WebAssembly
 
 Experiments with Go and WASM. I'm fairly beginner at both, so feedback
 is welcome.
