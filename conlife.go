@@ -72,13 +72,8 @@ func onAnimFrame(args []js.Value) {
 	// A bit of a race here: someone might have called for a stop, but
 	// there was already an anim frame requested. In that case, we just
 	// ignore the anim frame request and return.
-	if !running {
-		return
-	}
-
-	updateLife()
-
 	if running {
+		updateLife()
 		requestAnimFrame()
 	}
 }
