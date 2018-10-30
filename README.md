@@ -1,6 +1,7 @@
 # Conway's Life in Go and Web Assembly
 
-Experiments with Go and WASM.
+Experiments with Go and WASM. I'm fairly beginner at both, so feedback
+is welcome.
 
 ## References
 
