@@ -13,9 +13,10 @@ const cHeight = 300 // Canvas/game height
 var conlife *life.Life // Reference to game data
 var running bool       // If the game is running or not
 
-var ctx js.Value         // Canvas drawing context
-var imageData js.Value   // Reference to canvas's imageData
-var newPixelData []uint8 // RGBA data for the canvas
+var ctx js.Value                    // Canvas drawing context
+var imageData js.Value              // Reference to canvas's imageData
+var newPixelData []uint8            // RGBA data for the canvas
+var newPixelDataArray js.TypedArray // JS wrapper for newPixelData
 
 var animFrameCb js.Callback // requestAnimationFrame callback
 
@@ -53,11 +54,7 @@ func drawLife() {
 		newPixelData[j+3] = 255
 	}
 
-	newPixelDataArray := js.TypedArrayOf(newPixelData)
-
 	imageData.Get("data").Call("set", newPixelDataArray)
-
-	newPixelDataArray.Release()
 
 	ctx.Call("putImageData", imageData, 0, 0)
 }
@@ -164,6 +161,7 @@ func main() {
 	// Allocate an RGBA array for drawing to the canvas
 	indexCount := cWidth * cHeight * 4
 	newPixelData = make([]uint8, indexCount, indexCount)
+	newPixelDataArray = js.TypedArrayOf(newPixelData)
 
 	// Initialize JS and add the event listeners
 	initJs()
