@@ -6,15 +6,17 @@ import (
 	"github.com/beejjorgensen/conlife/life"
 )
 
-const cWidth = 400
-const cHeight = 300
+const cWidth = 400  // Canvas/game width
+const cHeight = 300 // Canvas/game height
 
-var running bool
-var conlife *life.Life
-var ctx js.Value
-var imageData js.Value
-var newPixelData []uint8
-var animFrameCb js.Callback
+var conlife *life.Life // Reference to game data
+var running bool       // If the game is running or not
+
+var ctx js.Value         // Canvas drawing context
+var imageData js.Value   // Reference to canvas's imageData
+var newPixelData []uint8 // RGBA data for the canvas
+
+var animFrameCb js.Callback // requestAnimationFrame callback
 
 // updateLife single-steps the simulation and updates the canvas
 func updateLife() {
@@ -24,6 +26,7 @@ func updateLife() {
 
 // drawLife renders the current game state
 func drawLife() {
+	// lifeData is read-only!
 	lifeData := conlife.Get()
 
 	for i := range lifeData {
