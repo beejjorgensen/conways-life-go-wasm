@@ -27,7 +27,7 @@ goexec 'http.ListenAndServe(":8000", http.FileServer(http.Dir(".")))'
 
 ## Demo
 
-* [Demo](https://beejjorgensen.github.io/conways-life-go-wasm/demo/)
+* [Demo](https://beejjorgensen.github.io/conways-life-go-wasm/docs/)
 
 ## References
 
