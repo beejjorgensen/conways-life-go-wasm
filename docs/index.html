@@ -31,16 +31,22 @@ license that can be found in the LICENSE file.
 			inst = result.instance;
 
 			go.run(inst);
+
+			document.getElementById("loading-screen").classList.add("hidden");
+			document.getElementById("life-screen").classList.remove("hidden");
 		});
 	</script>
 
-	<canvas id="lifecanvas"></canvas>
-	<br>
-	<button id="step-button">Step</button>
-	<button id="run-button">Run</button>
-	<button id="rand-button">Random</button>
+	<div id="life-screen" class="hidden">
+		<canvas id="lifecanvas"></canvas>
+		<br>
+		<button id="step-button">Step</button>
+		<button id="run-button">Run</button>
+		<button id="rand-button">Random</button>
 
-	<div>Generation: <span id="generation">0</span></div>
+		<div>Generation: <span id="generation">0</span></div>
+
+	<div id="loading-screen">Loading...</div>
 </body>
 
 </html>
