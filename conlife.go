@@ -23,7 +23,11 @@ var animFrameCb js.Callback // requestAnimationFrame callback
 func updateLife() {
 	conlife.Step()
 	drawLife()
+	updateGenerations()
+}
 
+// updateGenerations updates the generation count view
+func updateGenerations() {
 	setInnerHTML("generation", strconv.FormatInt(int64(conlife.Generation), 10))
 }
 
@@ -65,6 +69,13 @@ func requestAnimFrame() {
 
 // onAnimFrame is called each animation frame
 func onAnimFrame(args []js.Value) {
+	// A bit of a race here: someone might have called for a stop, but
+	// there was already an anim frame requested. In that case, we just
+	// ignore the anim frame request and return.
+	if !running {
+		return
+	}
+
 	updateLife()
 
 	if running {
@@ -105,6 +116,14 @@ func onRunButton(args []js.Value) {
 	}
 }
 
+// onRandButton is called when the Random button is clicked
+func onRandButton(args []js.Value) {
+	stopRun()
+	conlife.Randomize()
+	drawLife()
+	updateGenerations()
+}
+
 // setInnerHTML sets an HTML button label
 func setInnerHTML(id, label string) {
 	document := js.Global().Get("document")
@@ -134,6 +153,9 @@ func initJs() {
 
 	cb = js.NewCallback(onRunButton)
 	document.Call("getElementById", "run-button").Call("addEventListener", "click", cb)
+
+	cb = js.NewCallback(onRandButton)
+	document.Call("getElementById", "rand-button").Call("addEventListener", "click", cb)
 
 	animFrameCb = js.NewCallback(onAnimFrame)
 }
