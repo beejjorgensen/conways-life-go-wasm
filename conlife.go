@@ -1,6 +1,7 @@
 package main
 
 import (
+	"strconv"
 	"syscall/js"
 
 	"github.com/beejjorgensen/conlife/life"
@@ -22,6 +23,8 @@ var animFrameCb js.Callback // requestAnimationFrame callback
 func updateLife() {
 	conlife.Step()
 	drawLife()
+
+	setInnerHTML("generation", strconv.FormatInt(int64(conlife.Generation), 10))
 }
 
 // drawLife renders the current game state
@@ -72,7 +75,7 @@ func onAnimFrame(args []js.Value) {
 // startRun starts the simulation
 func startRun() {
 	if !running {
-		setButtonLabel("run-button", "Stop")
+		setInnerHTML("run-button", "Stop")
 		running = true
 
 		requestAnimFrame()
@@ -82,7 +85,7 @@ func startRun() {
 // stopRun stops the simulation
 func stopRun() {
 	if running {
-		setButtonLabel("run-button", "Run")
+		setInnerHTML("run-button", "Run")
 		running = false
 	}
 }
@@ -102,8 +105,8 @@ func onRunButton(args []js.Value) {
 	}
 }
 
-// setButtonLabel sets an HTML button label
-func setButtonLabel(id, label string) {
+// setInnerHTML sets an HTML button label
+func setInnerHTML(id, label string) {
 	document := js.Global().Get("document")
 	document.Call("getElementById", id).Set("innerHTML", label)
 }

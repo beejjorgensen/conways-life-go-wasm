@@ -8,7 +8,7 @@ license that can be found in the LICENSE file.
 
 <head>
 	<meta charset="utf-8">
-	<title>Go wasm</title>
+	<title>Conway's Life in Go/WASM</title>
 </head>
 
 <body>
@@ -31,20 +31,14 @@ license that can be found in the LICENSE file.
 
 			go.run(inst);
 		});
-
-		/*
-		async function run() {
-			console.clear();
-			await go.run(inst);
-			inst = await WebAssembly.instantiate(mod, go.importObject); // reset instance
-		}
-		*/
 	</script>
 
 	<canvas id="lifecanvas"></canvas>
 	<br>
 	<button id="step-button">Step</button>
 	<button id="run-button">Run</button>
+
+	<div>Generation: <span id="generation">0</span></div>
 </body>
 
 </html>
